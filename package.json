@@ -1,6 +1,6 @@
 {
   "name": "simple-vue2-datetimepicker",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "",
   "main": "dist/SimpleVue2DateTimePicker.umd.js",
   "module": "dist/SimpleVue2DateTimePicker.esm.js",
