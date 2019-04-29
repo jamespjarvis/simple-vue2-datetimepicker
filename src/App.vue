@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <DateTimePicker></DateTimePicker>
+    <DateTimePicker v-model="myDate"></DateTimePicker>
   </div>
 </template>
 
@@ -9,6 +9,11 @@ import DateTimePicker from "./DateTimePicker/DateTimePicker.vue";
 
 export default {
   name: "app",
+  data() {
+    return {
+      myDate: new Date("June 28, 2019, 5:00 PM")
+    };
+  },
   components: {
     DateTimePicker
   }

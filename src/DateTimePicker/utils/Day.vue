@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { nextMonth, isSameDay } from "./utils";
+import { nextMonth, isSameDay } from "./utils/index.js";
 
 export default {
   name: "Day",

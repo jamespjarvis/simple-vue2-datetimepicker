@@ -15,7 +15,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "cross-env NODE_ENV=production rollup --config build/rollup.config.js",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "cypress:open": "cypress open"
   },
   "dependencies": {
     "core-js": "^2.6.5",
@@ -28,7 +29,9 @@
     "@vue/eslint-config-prettier": "^4.0.1",
     "babel-eslint": "^10.0.1",
     "cross-env": "^5.2.0",
+    "cypress": "^3.2.0",
     "eslint": "^5.16.0",
+    "eslint-plugin-cypress": "^2.2.1",
     "eslint-plugin-vue": "^5.0.0",
     "lint-staged": "^8.1.5",
     "rollup": "^1.4.1",
@@ -40,6 +43,7 @@
     "rollup-plugin-vue": "^4.7.2",
     "sass": "^1.18.0",
     "sass-loader": "^7.1.0",
+    "vue-svg-loader": "^0.12.0",
     "vue-template-compiler": "^2.5.21"
   },
   "eslintConfig": {
@@ -47,9 +51,12 @@
     "env": {
       "node": true
     },
+    "plugins": ["cypress"],
     "extends": [
       "plugin:vue/essential",
-      "@vue/prettier"
+      "@vue/prettier",
+      "plugin:cypress/recommended"
+
     ],
     "rules": {},
     "parserOptions": {

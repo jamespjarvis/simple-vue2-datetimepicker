@@ -8,8 +8,7 @@
       :date="selectedDate"
       :options="options"
       :editing="editing"
-      :locale="locale"
-      :military-time="militaryTime"
+      :formatOptions="mergedOptions"
       @update="editing = !editing"
     />
     <div class="inputs">
@@ -18,21 +17,21 @@
         :value="selectedDate"
         :currentDate="currentDate"
         :start-day="startDay"
-        :locale="locale"
+        :locale="mergedOptions.locale"
         @update:daterange="d => updateDateRange(d)"
         @input="d => updateDate(d)"
       />
       <TimePicker
         v-if="options.time"
         :value="currentDate"
-        :military-time="militaryTime"
+        :military-time="!mergedOptions.hour12"
         @input="d => updateTime(d)"
       />
     </div>
   </div>
 </template>
 <script>
-import { hours, minutes } from "./utils";
+import { hours, minutes } from "./utils/index.js";
 
 import DateTime from "./DateTime.vue";
 import TimePicker from "./TimePicker.vue";
@@ -64,20 +63,14 @@ export default {
       required: false,
       default: "Sunday"
     },
-    militaryTime: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    locale: {
-      type: String,
-      required: false,
-      default: "en-US"
-    },
     maxWidth: {
       type: Number,
       required: false,
       default: 400
+    },
+    formatOptions: {
+      type: Object,
+      default: () => ({})
     }
   },
   data() {
@@ -87,6 +80,17 @@ export default {
       currentDate: this.value,
       hours,
       minutes,
+      defaultOptions: {
+        locale: "en-US",
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        hour12: true
+      },
+      mergedOptions: {},
       options: {
         date: this.date,
         time: this.time
@@ -99,6 +103,9 @@ export default {
         this.editing = false;
       }
     });
+  },
+  mounted() {
+    this.mergedOptions = { ...this.defaultOptions, ...this.formatOptions };
   },
   destroyed() {
     window.removeEventListener("click", this.handleOutClick);
@@ -125,19 +132,13 @@ export default {
 };
 </script>
 <style lang="scss">
-// .slide-enter-active,
-// .slide-leave-active {
-//   overflow: hidden;
-//   max-height: 400px;
-//   transition: max-height 500ms ease;
-// }
-// .slide-enter,
-// .slide-leave-to {
-//   max-height: 0;
-// }
 .date-time-picker {
   position: relative;
-
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
   &.is-active {
     .inputs {
       // box-shadow: 0 2px 2px 1px rgba(0, 0, 0, 0.125);
@@ -282,7 +283,7 @@ export default {
     // border: none;
     border-right: 1px solid #ced4da;
     border-left: 1px solid #ced4da;
-    border-top: 1px solid #ced4da;
+    // border-top: 1px solid #ced4da;
   }
 
   .date-picker header {
@@ -291,6 +292,7 @@ export default {
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid #ced4da;
+    border-top: 1px solid #ced4da;
     // border: 1px solid #ced4da;
     user-select: none;
   }

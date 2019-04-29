@@ -44,7 +44,7 @@ import {
   deepFlatten,
   weekdays,
   weekdaysShort
-} from "./utils";
+} from "./utils/index.js";
 
 import Calendar from "./Calendar/Calendar.vue";
 export default {
@@ -63,7 +63,7 @@ export default {
     },
     locale: {
       type: String,
-      required: true
+      default: "en-US"
     },
     currentDate: {
       type: Date,

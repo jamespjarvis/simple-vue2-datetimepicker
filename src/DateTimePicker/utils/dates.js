@@ -33,13 +33,7 @@ export const weekdaysShort = [
 ];
 
 export const isDate = date => {
-  if (!date) {
-    return false;
-  }
-  if (isNaN(new Date(date).getTime())) {
-    return false;
-  }
-  return true;
+  return !!date && !isNaN(new Date(date).getTime());
 };
 
 export const getClearHoursTime = time => {
