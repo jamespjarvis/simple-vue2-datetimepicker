@@ -25,15 +25,12 @@
         <path d="M0 0h24v24H0z" fill="none" />
       </svg>
     </header>
-    <div class="calendar">
-      <Day
-        v-for="(day, i) in displayRows"
-        :date="day.date"
-        :selected="value"
-        :key="i"
-        @select="$emit('input', day.date)"
-      />
-    </div>
+    <Calendar
+      :days="displayRows"
+      :value="currentDate"
+      :selected="value"
+      @select="onSelect"
+    />
   </div>
 </template>
 <script>
@@ -49,12 +46,11 @@ import {
   weekdaysShort
 } from "./utils";
 
-import Day from "./Calendar/Day.vue";
-
+import Calendar from "./Calendar/Calendar.vue";
 export default {
   name: "DatePicker",
   components: {
-    Day
+    Calendar
   },
   props: {
     value: {
@@ -68,6 +64,10 @@ export default {
     locale: {
       type: String,
       required: true
+    },
+    currentDate: {
+      type: Date,
+      required: true
     }
   },
   data() {
@@ -77,7 +77,7 @@ export default {
   },
   computed: {
     currentMonth() {
-      return getMonthName(this.value, this.locale);
+      return getMonthName(this.currentDate, this.locale);
     },
     displayRows() {
       return this.init();
@@ -96,7 +96,7 @@ export default {
   },
   methods: {
     init() {
-      const date = this.value;
+      const date = this.currentDate;
       const currentYear = date.getFullYear();
       const currentMonth = date.getMonth();
 
@@ -136,7 +136,7 @@ export default {
             const time = d.getTime();
             const isToday = time === getClearHoursTime(Date.now());
             const selected =
-              getClearHoursTime(this.value.getTime()) ===
+              getClearHoursTime(this.currentDate.getTime()) ===
               getClearHoursTime(d.getTime())
                 ? "selected"
                 : "";
@@ -162,11 +162,11 @@ export default {
     },
     setMonth(offset) {
       const d = new Date();
-      const day = this.value.getDate();
-      d.setMonth(this.value.getMonth() + offset, day);
-      this.$emit("input", d);
+      const day = this.currentDate.getDate();
+      d.setMonth(this.currentDate.getMonth() + offset, day);
+      this.$emit("update:daterange", d);
     },
-    handleSelect(d) {
+    onSelect(d) {
       this.$emit("input", d);
     }
   }

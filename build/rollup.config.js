@@ -10,7 +10,7 @@ import scss from "rollup-plugin-scss";
 const argv = minimist(process.argv.slice(2));
 
 const baseConfig = {
-  input: "src/DateTimePicker/entry.js",
+  input: "src/DateTimePicker/index.js",
   plugins: [
     scss(),
     replace({

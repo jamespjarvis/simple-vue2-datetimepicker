@@ -1,11 +1,11 @@
 // Import vue component
-import DateTimePicker from "./DateTimePicker.vue";
+import component from "./DateTimePicker.vue";
 
-// Declare install function executed by Vue.use()
-export function install(Vue) {
+// install function executed by Vue.use()
+function install(Vue) {
   if (install.installed) return;
   install.installed = true;
-  Vue.component("DateTimePicker", DateTimePicker);
+  Vue.component("DateTimePicker", component);
 }
 
 // Create module definition for Vue.use()
@@ -13,7 +13,8 @@ const plugin = {
   install
 };
 
-// Auto-install when vue is found (eg. in browser via <script> tag)
+// To auto-install when vue is found
+/* global window global */
 let GlobalVue = null;
 if (typeof window !== "undefined") {
   GlobalVue = window.Vue;
@@ -24,5 +25,9 @@ if (GlobalVue) {
   GlobalVue.use(plugin);
 }
 
-// To allow use as module (npm/webpack/etc.) export component
-export default DateTimePicker;
+// Inject install function into component - allows component
+// to be registered via Vue.use() as well as Vue.component()
+component.install = install;
+
+// Export component by default
+export default component;

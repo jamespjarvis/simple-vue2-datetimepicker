@@ -1,6 +1,6 @@
 {
   "name": "simple-vue2-datetimepicker",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "a vue.js component for selecting dates/times",
   "main": "dist/SimpleVue2DateTimePicker.umd.js",
   "module": "dist/SimpleVue2DateTimePicker.esm.js",

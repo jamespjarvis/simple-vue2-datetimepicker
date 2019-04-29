@@ -1,5 +1,9 @@
 <template>
-  <div :class="classList" @click="$emit('select')">{{ day }}</div>
+  <div :class="classList" @click="$emit('select', date)">
+    <div class="day__inner">
+      {{ day }}
+    </div>
+  </div>
 </template>
 
 <script>
@@ -9,6 +13,10 @@ export default {
   name: "Day",
   props: {
     date: {
+      type: Date,
+      required: true
+    },
+    currentDate: {
       type: Date,
       required: true
     },
@@ -34,9 +42,9 @@ export default {
   },
   methods: {
     getType() {
-      return nextMonth(this.selected, -1).getMonth() === this.date.getMonth()
+      return nextMonth(this.currentDate, -1).getMonth() === this.date.getMonth()
         ? "prev"
-        : nextMonth(this.selected, 1).getMonth() === this.date.getMonth()
+        : nextMonth(this.currentDate, 1).getMonth() === this.date.getMonth()
         ? "next"
         : "current";
     }
@@ -44,4 +52,50 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss">
+.day {
+  user-select: none;
+  height: 0;
+  padding-top: 80%;
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: inset 0 0 1px #ced4da;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  transition: all 50ms ease-out;
+
+  .day__inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &.selected,
+  &.today {
+    box-shadow: none;
+  }
+  &.prev-month,
+  &.next-month {
+    color: rgb(201, 201, 201);
+  }
+
+  $today-color: hsl(0, 72%, 56%);
+  $selected-color: #1e88e5;
+
+  &.today {
+    background-color: $today-color;
+    border-color: $today-color;
+    color: #fff;
+  }
+  &.selected {
+    background-color: $selected-color;
+    border-color: $selected-color;
+    color: #fff;
+  }
+}
+</style>

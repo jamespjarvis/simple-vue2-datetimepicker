@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import DateTimePicker from "./DateTimePicker/SimpleVue2DateTimePicker.vue";
+import DateTimePicker from "./DateTimePicker/DateTimePicker.vue";
 
 export default {
   name: "app",
@@ -14,3 +14,9 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+#app {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+</style>

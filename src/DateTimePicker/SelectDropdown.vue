@@ -1,5 +1,5 @@
 <template>
-  <div class="datetimepicker-select">
+  <div class="select-dropdown" :class="show ? 'is-active' : ''">
     <div
       :class="show ? 'open' : 'closed'"
       class="selected"
@@ -18,24 +18,22 @@
         <path d="M0 0h24v24H0z" fill="none" />
       </svg>
     </div>
-    <transition name="slide">
-      <div v-if="show" class="dropdown scrollbar">
-        <div
-          v-for="(option, i) in options"
-          :key="i"
-          :class="option === value ? 'active' : ''"
-          class="option"
-          @click="handleSelect(option)"
-        >
-          {{ padNum(option) }}
-        </div>
+    <div class="dropdown scrollbar" :class="show ? 'is-active' : ''">
+      <div
+        v-for="(option, i) in options"
+        :key="i"
+        :class="option === value ? 'active' : ''"
+        class="option"
+        @click="handleSelect(option)"
+      >
+        {{ padNum(option) }}
       </div>
-    </transition>
+    </div>
   </div>
 </template>
 <script>
 export default {
-  name: "Select",
+  name: "SelectDropdown",
   props: {
     value: {
       type: [Number, String],
