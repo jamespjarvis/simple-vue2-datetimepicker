@@ -1,27 +1,28 @@
 <template>
   <div class="date-time-picker">
-    <DateTime 
-      :date="value" 
-      :options="options" 
-      :editing="editing" 
+    <DateTime
+      :date="currentDate"
+      :options="options"
+      :editing="editing"
       :locale="locale"
       :military-time="militaryTime"
-      @update="editing = !editing"/>
+      @update="editing = !editing"
+    />
     <transition name="slide">
-      <div 
-        v-if="editing" 
-        class="inputs">
-        <DatePicker 
-          v-if="options.date" 
-          :value="currentDate" 
+      <div v-if="editing" class="inputs">
+        <DatePicker
+          v-if="options.date"
+          :value="currentDate"
           :start-day="startDay"
           :locale="locale"
-          @input="d => updateDate(d)"/>
-        <TimePicker 
-          v-if="options.time" 
-          :value="currentDate" 
+          @input="d => updateDate(d)"
+        />
+        <TimePicker
+          v-if="options.time"
+          :value="currentDate"
           :military-time="militaryTime"
-          @input="d => updateTime(d)"/>
+          @input="d => updateTime(d)"
+        />
       </div>
     </transition>
   </div>
@@ -43,7 +44,8 @@ export default {
   props: {
     value: {
       type: Date,
-      required: true
+      required: false,
+      default: () => new Date()
     },
     date: {
       type: Boolean,
@@ -72,7 +74,7 @@ export default {
   data() {
     return {
       editing: false,
-      currentDate: new Date(),
+      currentDate: this.value,
       hours,
       minutes,
       options: {

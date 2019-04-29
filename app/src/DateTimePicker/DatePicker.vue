@@ -1,45 +1,38 @@
 <template>
   <div class="date-picker">
     <header>
-      <svg 
-        height="24" 
-        viewBox="0 0 24 24" 
-        width="24" 
-        xmlns="http://www.w3.org/2000/svg" 
-        @click="setMonth(-1)">
-        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-        <path 
-          d="M0 0h24v24H0z" 
-          fill="none"/>
+      <svg
+        height="24"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+        @click="setMonth(-1)"
+      >
+        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+        <path d="M0 0h24v24H0z" fill="none" />
       </svg>
-      <span>{{ currentMonth }}&nbsp;<b>{{ value.getFullYear() }}</b></span>
-      <svg 
-        height="24" 
-        viewBox="0 0 24 24" 
-        width="24" 
-        xmlns="http://www.w3.org/2000/svg" 
-        @click="setMonth(1)">
-        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
-        <path 
-          d="M0 0h24v24H0z" 
-          fill="none"/>
+      <span
+        >{{ currentMonth }}&nbsp;<b>{{ value.getFullYear() }}</b></span
+      >
+      <svg
+        height="24"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+        @click="setMonth(1)"
+      >
+        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+        <path d="M0 0h24v24H0z" fill="none" />
       </svg>
     </header>
     <div class="calendar">
-      <!-- <div 
-        v-for="(d, i) in weekdaysShort"
+      <Day
+        v-for="(day, i) in displayRows"
+        :date="day.date"
+        :selected="value"
         :key="i"
-        class="day label">
-        {{ d }}
-      </div> -->
-      <div 
-        v-for="(day, i) in displayRows" 
-        :key="`day-${i}`"
-        :class="[day.type, day.isToday ? 'today' : '', day.selected ? 'selected' : '']"
-        class="day"
-        @click="handleSelect(day.date)">
-        {{ day.text }}
-      </div>
+        @select="$emit('input', day.date)"
+      />
     </div>
   </div>
 </template>
@@ -55,8 +48,14 @@ import {
   weekdays,
   weekdaysShort
 } from "./utils";
+
+import Day from "./Calendar/Day.vue";
+
 export default {
   name: "DatePicker",
+  components: {
+    Day
+  },
   props: {
     value: {
       type: Date,
@@ -149,8 +148,8 @@ export default {
                 time < minTime
                   ? "prev-month"
                   : time > maxTime
-                    ? "next-month"
-                    : "current-month",
+                  ? "next-month"
+                  : "current-month",
               isToday
             };
           });

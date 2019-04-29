@@ -1,24 +1,24 @@
 // Import vue component
-import component from './SimpleVue2DateTimePicker.vue';
+import component from "./SimpleVue2DateTimePicker.vue";
 
 // install function executed by Vue.use()
 function install(Vue) {
   if (install.installed) return;
   install.installed = true;
-  Vue.component('SimpleVue2DateTimePicker', component);
+  Vue.component("SimpleVue2DateTimePicker", component);
 }
 
 // Create module definition for Vue.use()
 const plugin = {
-  install,
+  install
 };
 
 // To auto-install when vue is found
 /* global window global */
 let GlobalVue = null;
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   GlobalVue = window.Vue;
-} else if (typeof global !== 'undefined') {
+} else if (typeof global !== "undefined") {
   GlobalVue = global.Vue;
 }
 if (GlobalVue) {

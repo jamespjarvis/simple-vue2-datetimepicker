@@ -81,6 +81,16 @@ export const nextYear = (date, offset = 1) => {
   throw new Error(`nextYear: 1st parameter may be not a valid date`);
 };
 
+export const isSameDay = (date1, date2) => {
+  if (isDate(date1) && isDate(date2)) {
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    );
+  }
+  throw new Error(`isSameDay: 1st or 2nd parameter may be not a valid date`);
+};
 export const isLeapYear = year => {
   if (isNaN(year)) {
     return false;

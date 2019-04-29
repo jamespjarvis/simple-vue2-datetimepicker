@@ -1,17 +1,16 @@
 <template>
   <div class="time-picker">
-    <Select 
-      :value="hour12Format" 
-      :options="hours" 
-      @input="val => updateHours(val)"/>
-    <Select 
-      :value="minute" 
-      :options="minutes" 
-      @input="val => updateValue('minute',val)"/>
-    <Select 
-      v-if="!militaryTime"
-      v-model="ampm"
-      :options="['AM', 'PM']"/>
+    <Select
+      :value="hour12Format"
+      :options="hours"
+      @input="val => updateHours(val)"
+    />
+    <Select
+      :value="minute"
+      :options="minutes"
+      @input="val => updateValue('minute', val)"
+    />
+    <Select v-if="!militaryTime" v-model="ampm" :options="['AM', 'PM']" />
   </div>
 </template>
 <script>
