@@ -1,1 +1,1 @@
-# simple-vue2-datetimepicker
+# SIMPLE VUE 2 DATE TIME PICKER

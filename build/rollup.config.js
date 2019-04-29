@@ -1,31 +1,31 @@
 // rollup.config.js
-import vue from 'rollup-plugin-vue';
-import buble from 'rollup-plugin-buble';
-import commonjs from 'rollup-plugin-commonjs';
-import replace from 'rollup-plugin-replace';
-import { terser } from 'rollup-plugin-terser';
-import minimist from 'minimist';
-import scss from 'rollup-plugin-scss';
+import vue from "rollup-plugin-vue";
+import buble from "rollup-plugin-buble";
+import commonjs from "rollup-plugin-commonjs";
+import replace from "rollup-plugin-replace";
+import { terser } from "rollup-plugin-terser";
+import minimist from "minimist";
+import scss from "rollup-plugin-scss";
 
 const argv = minimist(process.argv.slice(2));
 
 const baseConfig = {
-  input: 'src/entry.js',
+  input: "src/DateTimePicker/entry.js",
   plugins: [
     scss(),
     replace({
-      'process.env.NODE_ENV': JSON.stringify('production'),
+      "process.env.NODE_ENV": JSON.stringify("production")
     }),
     commonjs(),
     vue({
       css: true,
       compileTemplate: true,
       template: {
-        isProduction: true,
-      },
+        isProduction: true
+      }
     }),
-    buble(),
-  ],
+    buble()
+  ]
 };
 
 // UMD/IIFE shared settings: externals and output.globals
@@ -41,70 +41,70 @@ const globals = {
 
 // Customize configs for individual targets
 const buildFormats = [];
-if (!argv.format || argv.format === 'es') {
+if (!argv.format || argv.format === "es") {
   const esConfig = {
     ...baseConfig,
     output: {
-      file: 'dist/SimpleVue2DateTimePicker.esm.js',
-      format: 'esm',
-      exports: 'named',
+      file: "dist/SimpleVue2DateTimePicker.esm.js",
+      format: "esm",
+      exports: "named"
     },
     plugins: [
       ...baseConfig.plugins,
       terser({
         output: {
-          ecma: 6,
-        },
-      }),
-    ],
+          ecma: 6
+        }
+      })
+    ]
   };
   buildFormats.push(esConfig);
 }
 
-if (!argv.format || argv.format === 'umd') {
+if (!argv.format || argv.format === "umd") {
   const umdConfig = {
     ...baseConfig,
     external,
     output: {
       compact: true,
-      file: 'dist/SimpleVue2DateTimePicker.umd.js',
-      format: 'umd',
-      name: 'SimpleVue2DateTimePicker',
-      exports: 'named',
-      globals,
+      file: "dist/SimpleVue2DateTimePicker.umd.js",
+      format: "umd",
+      name: "SimpleVue2DateTimePicker",
+      exports: "named",
+      globals
     },
     plugins: [
       ...baseConfig.plugins,
       terser({
         output: {
-          ecma: 6,
-        },
-      }),
-    ],
+          ecma: 6
+        }
+      })
+    ]
   };
   buildFormats.push(umdConfig);
 }
 
-if (!argv.format || argv.format === 'iife') {
+if (!argv.format || argv.format === "iife") {
   const unpkgConfig = {
     ...baseConfig,
     external,
     output: {
       compact: true,
-      file: 'dist/SimpleVue2DateTimePicker.min.js',
-      format: 'iife',
-      name: 'SimpleVue2DateTimePicker',
-      exports: 'named',
-      globals,
+      file: "dist/SimpleVue2DateTimePicker.min.js",
+      format: "iife",
+      name: "SimpleVue2DateTimePicker",
+      exports: "named",
+      globals
     },
     plugins: [
       ...baseConfig.plugins,
       terser({
         output: {
-          ecma: 5,
-        },
-      }),
-    ],
+          ecma: 5
+        }
+      })
+    ]
   };
   buildFormats.push(unpkgConfig);
 }
