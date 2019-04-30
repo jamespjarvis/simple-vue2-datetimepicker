@@ -1,6 +1,6 @@
 {
   "name": "simple-vue2-datetimepicker",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "description": "a vue.js component for selecting dates/times",
   "main": "dist/simple-vue2-datetimepicker.umd.js",
   "module": "dist/simple-vue2-datetimepicker.esm.js",
@@ -8,6 +8,10 @@
   "files": [
     "dist/*"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jamespjarvis/simple-vue2-datetimepicker"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "cross-env NODE_ENV=production rollup --config build/rollup.config.js",
