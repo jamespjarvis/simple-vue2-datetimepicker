@@ -1,30 +1,27 @@
 <template>
   <div
     class="date-time-picker"
-    :style="{ maxWidth: `${maxWidth}px` }"
+    :style="{ maxWidth: `${mergedDisplayOptions.maxWidth}px` }"
     :class="editing ? 'is-active' : ''"
   >
     <DateTime
       :date="selectedDate"
-      :options="options"
       :editing="editing"
-      :formatOptions="mergedOptions"
+      :formatOptions="mergedFormatOptions"
       @update="editing = !editing"
     />
-    <div class="inputs">
+    <div class="datetimepicker__inputs">
       <DatePicker
-        v-if="options.date"
         :value="selectedDate"
         :currentDate="currentDate"
         :start-day="startDay"
-        :locale="mergedOptions.locale"
+        :locale="mergedFormatOptions.locale"
         @update:daterange="d => updateDateRange(d)"
         @input="d => updateDate(d)"
       />
       <TimePicker
-        v-if="options.time"
         :value="currentDate"
-        :military-time="!mergedOptions.hour12"
+        :military-time="!mergedFormatOptions.hour12"
         @input="d => updateTime(d)"
       />
     </div>
@@ -33,10 +30,16 @@
 <script>
 import { hours, minutes } from "./utils/index.js";
 
-import DateTime from "./DateTime.vue";
-import TimePicker from "./TimePicker.vue";
-import DatePicker from "./DatePicker.vue";
+import DateTime from "./components/DateTime.vue";
+import TimePicker from "./components/TimePicker.vue";
+import DatePicker from "./components/DatePicker.vue";
 
+import Vue from "vue";
+Vue.filter("pad", input => {
+  return typeof input === "string"
+    ? input.padStart(2, "0")
+    : String(input).padStart(2, "0");
+});
 export default {
   name: "DateTimePicker",
   components: {
@@ -63,12 +66,11 @@ export default {
       required: false,
       default: "Sunday"
     },
-    maxWidth: {
-      type: Number,
-      required: false,
-      default: 400
-    },
     formatOptions: {
+      type: Object,
+      default: () => ({})
+    },
+    displayOptions: {
       type: Object,
       default: () => ({})
     }
@@ -81,20 +83,22 @@ export default {
       hours,
       minutes,
       defaultOptions: {
-        locale: "en-US",
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        hour12: true
+        timeFormat: {
+          locale: "en-US",
+          weekday: "short",
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          hour12: true
+        },
+        display: {
+          maxWidth: 400
+        }
       },
-      mergedOptions: {},
-      options: {
-        date: this.date,
-        time: this.time
-      }
+      mergedDisplayOptions: {},
+      mergedFormatOptions: {}
     };
   },
   created() {
@@ -105,7 +109,14 @@ export default {
     });
   },
   mounted() {
-    this.mergedOptions = { ...this.defaultOptions, ...this.formatOptions };
+    this.mergedFormatOptions = {
+      ...this.defaultOptions.timeFormat,
+      ...this.formatOptions
+    };
+    this.mergedDisplayOptions = {
+      ...this.defaultOptions.display,
+      ...this.displayOptions
+    };
   },
   destroyed() {
     window.removeEventListener("click", this.handleOutClick);
@@ -116,6 +127,7 @@ export default {
       const minutes = this.selectedDate.getMinutes();
       d.setHours(hours, minutes);
       this.selectedDate = d;
+
       this.$emit("input", d);
     },
     updateDateRange(d) {
@@ -125,7 +137,7 @@ export default {
       this.currentDate = d;
     },
     updateTime(d) {
-      this.currentDate = d;
+      this.selectedDate = d;
       this.$emit("input", d);
     }
   }
@@ -140,7 +152,7 @@ export default {
     box-sizing: border-box;
   }
   &.is-active {
-    .inputs {
+    .datetimepicker__inputs {
       // box-shadow: 0 2px 2px 1px rgba(0, 0, 0, 0.125);
       opacity: 1;
       visibility: visible;
@@ -158,7 +170,7 @@ export default {
  *
  */
 
-  .inputs {
+  .datetimepicker__inputs {
     z-index: 1;
     visibility: hidden;
     filter: alpha(opacity=0);
@@ -193,83 +205,6 @@ export default {
     //   border-bottom-left-radius: 0.25rem;
     //   // border-bottom-right-radius: 0.25rem;
     // }
-  }
-
-  /*
- *
- * DATE TIME
- *
- */
-
-  .date-time {
-    display: flex;
-    user-select: none;
-  }
-
-  .date-time.open > * {
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-  }
-
-  .input-group > .form-control {
-    position: relative;
-    flex: 1 1 auto;
-    width: 1%;
-    margin-bottom: 0;
-  }
-
-  .form-control {
-    padding: 0.375rem 0.75rem;
-    display: block;
-    width: 100%;
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #495057;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  }
-
-  .form-control:not(:last-child) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-
-  svg,
-  .form-control {
-    cursor: pointer;
-    fill: #252525;
-  }
-
-  .input-group-append {
-    display: flex;
-    margin-left: -1px;
-    svg {
-      fill: #495057;
-    }
-  }
-
-  .input-group-text {
-    display: flex;
-    align-items: center;
-    padding: 0.375rem 0.75rem;
-    margin-bottom: 0;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #495057;
-    text-align: center;
-    white-space: nowrap;
-    background-color: #e9ecef;
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-  }
-
-  .input-group-append > .input-group-text {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
   }
 
   /*

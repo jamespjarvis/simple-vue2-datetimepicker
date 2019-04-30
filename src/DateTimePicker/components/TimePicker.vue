@@ -20,7 +20,7 @@
 <script>
 import SelectDropdown from "./SelectDropdown.vue";
 
-import { militaryHours, hours, minutes } from "./utils/index.js";
+import { militaryHours, hours, minutes } from "../utils/index.js";
 
 export default {
   name: "TimePicker",

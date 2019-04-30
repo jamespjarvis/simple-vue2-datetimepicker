@@ -1,29 +1,9 @@
 <template>
   <div class="date-picker">
     <header>
-      <svg
-        height="24"
-        viewBox="0 0 24 24"
-        width="24"
-        xmlns="http://www.w3.org/2000/svg"
-        @click="setMonth(-1)"
-      >
-        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-        <path d="M0 0h24v24H0z" fill="none" />
-      </svg>
-      <span
-        >{{ currentMonth }}&nbsp;<b>{{ value.getFullYear() }}</b></span
-      >
-      <svg
-        height="24"
-        viewBox="0 0 24 24"
-        width="24"
-        xmlns="http://www.w3.org/2000/svg"
-        @click="setMonth(1)"
-      >
-        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-        <path d="M0 0h24v24H0z" fill="none" />
-      </svg>
+      <ChevronLeft @click="setMonth(-1)" />
+      <span v-html="displayDate" />
+      <ChevronRight @click="setMonth(1)" />
     </header>
     <Calendar
       :days="displayRows"
@@ -34,6 +14,9 @@
   </div>
 </template>
 <script>
+import ChevronLeft from "../icons/chevron-left.svg";
+import ChevronRight from "../icons/chevron-right.svg";
+
 import {
   getMonthName,
   getFirstDateOfMonth,
@@ -44,13 +27,15 @@ import {
   deepFlatten,
   weekdays,
   weekdaysShort
-} from "./utils/index.js";
+} from "../utils/index.js";
 
-import Calendar from "./Calendar/Calendar.vue";
+import Calendar from "./Calendar.vue";
 export default {
   name: "DatePicker",
   components: {
-    Calendar
+    Calendar,
+    ChevronRight,
+    ChevronLeft
   },
   props: {
     value: {
@@ -84,6 +69,9 @@ export default {
     },
     selectedDate() {
       return new Date(getClearHoursTime(Date.parse(this.value)));
+    },
+    displayDate() {
+      return `${this.currentMonth} <b>${this.value.getFullYear()}</b>`;
     }
   },
   watch: {
@@ -167,6 +155,7 @@ export default {
       this.$emit("update:daterange", d);
     },
     onSelect(d) {
+      this.$emit("update:daterange", d);
       this.$emit("input", d);
     }
   }

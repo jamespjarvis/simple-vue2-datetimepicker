@@ -62,7 +62,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  box-shadow: inset 0 0 1px #ced4da;
+  background-color: #fff;
   cursor: pointer;
   position: relative;
   z-index: 1;
@@ -84,18 +84,14 @@ export default {
     color: rgb(201, 201, 201);
   }
 
-  $today-color: hsl(0, 72%, 56%);
-  $selected-color: #1e88e5;
-
   &.today {
-    background-color: $today-color;
-    border-color: $today-color;
-    color: #fff;
+    z-index: 2;
+    background-color: hsl(0, 96%, 92%);
   }
   &.selected {
-    background-color: $selected-color;
-    border-color: $selected-color;
-    color: #fff;
+    z-index: 3;
+    background-color: #f4f4f4;
+    outline: 2px solid #ced4ce;
   }
 }
 </style>

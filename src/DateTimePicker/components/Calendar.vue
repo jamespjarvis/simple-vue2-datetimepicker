@@ -47,20 +47,14 @@ export default {
 .calendar {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+  grid-gap: 1px;
+  background-color: #ced4da;
   width: 100%;
-  background-color: #fff;
-  // border: 1px solid red;
-  // border-left: 1px solid #ced4da;
-  // border-right: 1px solid #ced4da;
-  // overflow: hidden;
+
   .weekday {
     text-align: center;
     padding: 0.15rem;
     background-color: #f4f4f4;
-    border-bottom: 1px solid #ced4da;
-    &:not(:last-child) {
-      border-right: 1px solid #ced4da;
-    }
   }
 }
 </style>
