@@ -63,10 +63,11 @@ export default {
   }
 
   &.is-active {
-    z-index: 2;
-    color: #fff;
-    background-color: #007bff;
-    border-color: #007bff;
+    // z-index: 2;
+    // color: #fff;
+    background-color: #f4f4f4;
+
+    // border-color: #e9ecef;
   }
 }
 </style>
