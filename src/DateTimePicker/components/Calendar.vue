@@ -5,7 +5,7 @@
       v-for="(day, j) in days"
       :key="`day-${j}`"
       :date="day.date"
-      :currentDate="value"
+      :current-date="value"
       :selected="selected"
       @select="d => $emit('select', d)"
     />
@@ -21,11 +21,6 @@ export default {
   components: {
     Day
   },
-  data() {
-    return {
-      weekdays: weekdaysShort
-    };
-  },
   props: {
     value: {
       type: Date,
@@ -39,6 +34,11 @@ export default {
       type: Array,
       required: true
     }
+  },
+  data() {
+    return {
+      weekdays: weekdaysShort
+    };
   }
 };
 </script>

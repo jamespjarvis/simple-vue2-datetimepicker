@@ -10,17 +10,21 @@
       :options="minutes"
       @input="val => updateValue('minute', val)"
     />
-    <SelectDropdown
-      v-show="!militaryTime"
-      v-model="ampm"
-      :options="['AM', 'PM']"
-    />
+    <SelectDropdown v-show="!militaryTime" v-model="ampm" :options="period" />
   </div>
 </template>
 <script>
 import SelectDropdown from "./SelectDropdown.vue";
 
 import { militaryHours, hours, minutes } from "../utils/index.js";
+
+const generateOptions = arr => {
+  return arr.map(i => ({
+    text:
+      typeof i === "string" ? i.padStart(2, "0") : String(i).padStart(2, "0"),
+    value: i
+  }));
+};
 
 export default {
   name: "TimePicker",
@@ -34,22 +38,22 @@ export default {
     },
     militaryTime: {
       type: Boolean,
-      required: true
+      default: false
     }
   },
   data() {
     const minute = Math.round(this.value.getMinutes() / 5) * 5;
+
     return {
       hour: this.value.getHours(),
       minute,
       ampm: this.value.getHours() > 12 ? "PM" : "AM",
-      minutes
+      minutes: generateOptions(minutes),
+      hours: generateOptions(this.militaryTime ? militaryHours : hours),
+      period: generateOptions(["AM", "PM"])
     };
   },
   computed: {
-    hours() {
-      return this.militaryTime ? militaryHours : hours;
-    },
     hour12Format() {
       return this.getHours();
     },
@@ -73,12 +77,14 @@ export default {
       if (this.militaryTime) {
         this.hour = hour;
       } else {
+        const h = typeof hour === "number" ? hour : parseInt(hour);
+
         if (this.ampm === "PM") {
-          this.hour = hour < 12 ? hour + 12 : hour;
+          this.hour = h < 12 ? h + 12 : h;
         }
 
         if (this.ampm === "AM") {
-          this.hour = hour >= 12 ? hour - 12 : hour;
+          this.hour = h >= 12 ? h - 12 : h;
         }
       }
 
@@ -95,19 +101,8 @@ export default {
 </script>
 
 <style lang="scss">
-/*
- *
- * TIME PICKER
- *
- */
-
 .time-picker {
   display: flex;
   align-items: stretch;
-
-  // border-top: 1px solid #ced4da;
-  // border-left: 1px solid #ced4da;
-  // border-right: 1px solid #ced4da;
-  // border-bottom: 1px solid #ced4da;
 }
 </style>

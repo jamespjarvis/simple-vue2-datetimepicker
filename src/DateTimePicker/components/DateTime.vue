@@ -97,7 +97,7 @@ export default {
     color: #495057;
     text-align: center;
     white-space: nowrap;
-    background-color: #e9ecef;
+    background-color: #f4f4f4;
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
   }

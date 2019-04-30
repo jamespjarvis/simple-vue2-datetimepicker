@@ -6,6 +6,7 @@ import replace from "rollup-plugin-replace";
 import { terser } from "rollup-plugin-terser";
 import minimist from "minimist";
 import scss from "rollup-plugin-scss";
+import svg from "rollup-plugin-vue-inline-svg";
 
 const argv = minimist(process.argv.slice(2));
 
@@ -17,6 +18,7 @@ const baseConfig = {
       "process.env.NODE_ENV": JSON.stringify("production")
     }),
     commonjs(),
+    svg(),
     vue({
       css: true,
       compileTemplate: true,
@@ -24,12 +26,11 @@ const baseConfig = {
         isProduction: true
       }
     }),
-    buble()
+    buble({ objectAssign: "Object.assign" })
   ]
 };
 
 // UMD/IIFE shared settings: externals and output.globals
-// Refer to https://rollupjs.org/guide/en#output-globals for details
 const external = [
   // list external dependencies, exactly the way it is written in the import statement.
   // eg. 'jquery'
@@ -41,11 +42,12 @@ const globals = {
 
 // Customize configs for individual targets
 const buildFormats = [];
+
 if (!argv.format || argv.format === "es") {
   const esConfig = {
     ...baseConfig,
     output: {
-      file: "dist/SimpleVue2DateTimePicker.esm.js",
+      file: "dist/simple-vue2-datetimepicker.esm.js",
       format: "esm",
       exports: "named"
     },
@@ -67,9 +69,9 @@ if (!argv.format || argv.format === "umd") {
     external,
     output: {
       compact: true,
-      file: "dist/SimpleVue2DateTimePicker.umd.js",
+      file: "dist/simple-vue2-datetimepicker.umd.js",
       format: "umd",
-      name: "SimpleVue2DateTimePicker",
+      name: "DateTimePicker",
       exports: "named",
       globals
     },
@@ -91,10 +93,9 @@ if (!argv.format || argv.format === "iife") {
     external,
     output: {
       compact: true,
-      file: "dist/SimpleVue2DateTimePicker.min.js",
+      file: "dist/simple-vue2-datetimepicker.min.js",
       format: "iife",
-      name: "SimpleVue2DateTimePicker",
-      exports: "named",
+      name: "DateTimePicker",
       globals
     },
     plugins: [

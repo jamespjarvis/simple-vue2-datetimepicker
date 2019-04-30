@@ -1,19 +1,15 @@
 <template>
-  <div
-    class="date-time-picker"
-    :style="{ maxWidth: `${mergedDisplayOptions.maxWidth}px` }"
-    :class="editing ? 'is-active' : ''"
-  >
+  <div class="date-time-picker" :class="editing ? 'is-active' : ''">
     <DateTime
       :date="selectedDate"
       :editing="editing"
-      :formatOptions="mergedFormatOptions"
+      :format-options="mergedFormatOptions"
       @update="editing = !editing"
     />
     <div class="datetimepicker__inputs">
       <DatePicker
         :value="selectedDate"
-        :currentDate="currentDate"
+        :current-date="currentDate"
         :start-day="startDay"
         :locale="mergedFormatOptions.locale"
         @update:daterange="d => updateDateRange(d)"
@@ -34,12 +30,6 @@ import DateTime from "./components/DateTime.vue";
 import TimePicker from "./components/TimePicker.vue";
 import DatePicker from "./components/DatePicker.vue";
 
-import Vue from "vue";
-Vue.filter("pad", input => {
-  return typeof input === "string"
-    ? input.padStart(2, "0")
-    : String(input).padStart(2, "0");
-});
 export default {
   name: "DateTimePicker",
   components: {
@@ -92,12 +82,8 @@ export default {
           hour: "numeric",
           minute: "numeric",
           hour12: true
-        },
-        display: {
-          maxWidth: 400
         }
       },
-      mergedDisplayOptions: {},
       mergedFormatOptions: {}
     };
   },
@@ -107,17 +93,12 @@ export default {
         this.editing = false;
       }
     });
-  },
-  mounted() {
     this.mergedFormatOptions = {
       ...this.defaultOptions.timeFormat,
       ...this.formatOptions
     };
-    this.mergedDisplayOptions = {
-      ...this.defaultOptions.display,
-      ...this.displayOptions
-    };
   },
+  mounted() {},
   destroyed() {
     window.removeEventListener("click", this.handleOutClick);
   },

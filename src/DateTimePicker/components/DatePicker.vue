@@ -2,7 +2,10 @@
   <div class="date-picker">
     <header>
       <ChevronLeft @click="setMonth(-1)" />
-      <span v-html="displayDate" />
+      <span>
+        {{ currentMonth }}
+        <b>{{ currentYear }}</b>
+      </span>
       <ChevronRight @click="setMonth(1)" />
     </header>
     <Calendar
@@ -70,8 +73,8 @@ export default {
     selectedDate() {
       return new Date(getClearHoursTime(Date.parse(this.value)));
     },
-    displayDate() {
-      return `${this.currentMonth} <b>${this.value.getFullYear()}</b>`;
+    currentYear() {
+      return this.value.getFullYear();
     }
   },
   watch: {

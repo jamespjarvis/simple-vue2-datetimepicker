@@ -2,10 +2,10 @@
   <div
     class="datetimepicker__option"
     :class="selected ? 'is-active' : ''"
-    @click="$emit('select', option)"
+    @click="$emit('select', option.value)"
   >
     <div class="option__inner">
-      {{ option | pad }}
+      {{ option.text }}
     </div>
   </div>
 </template>
@@ -15,7 +15,7 @@ export default {
   name: "DropdownItem",
   props: {
     option: {
-      type: [String, Number],
+      type: Object,
       required: true
     },
     selected: {
@@ -54,7 +54,7 @@ export default {
   &:focus {
     color: #495057;
     text-decoration: none;
-    background-color: #f8f9fa;
+    background-color: #fafafa;
   }
 
   &:active {

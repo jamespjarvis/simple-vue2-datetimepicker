@@ -1,7 +1,7 @@
 <template>
   <div class="select-dropdown" :class="show ? 'is-active' : ''">
     <div class="selected" @click="show = !show">
-      <span>{{ value | pad }}</span>
+      <span>{{ displayValue }}</span>
       <ExpandLess v-if="show" />
       <ExpandMore v-else />
     </div>
@@ -10,7 +10,7 @@
         v-for="(option, i) in options"
         :key="`option-${i}`"
         :option="option"
-        :selected="option === value"
+        :selected="option.value === value"
         @select="handleSelect(option)"
       />
     </div>
@@ -44,6 +44,11 @@ export default {
       show: false
     };
   },
+  computed: {
+    displayValue() {
+      return this.pad(this.value);
+    }
+  },
   mounted() {
     window.addEventListener("click", this.onClick);
   },
@@ -51,13 +56,18 @@ export default {
     window.removeEventListener("click", this.onClick);
   },
   methods: {
+    pad(input) {
+      return typeof input === "string"
+        ? input.padStart(2, "0")
+        : String(input).padStart(2, "0");
+    },
     onClick(e) {
       if (!this.$el.contains(e.target)) {
         this.show = false;
       }
     },
     handleSelect(option) {
-      this.$emit("input", option);
+      this.$emit("input", option.value);
     }
   }
 };
