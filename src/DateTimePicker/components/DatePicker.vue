@@ -1,15 +1,15 @@
 <template>
   <div class="date-picker">
     <header>
-      <button>
-        <ChevronLeft @click="setMonth(-1)" />
+      <button @click="() => setMonth(-1)">
+        <ChevronLeft />
       </button>
       <span>
         {{ currentMonth }}
         <b>{{ currentYear }}</b>
       </span>
-      <button>
-        <ChevronRight @click="setMonth(1)" />
+      <button @click="() => setMonth(1)">
+        <ChevronRight />
       </button>
     </header>
     <Calendar
