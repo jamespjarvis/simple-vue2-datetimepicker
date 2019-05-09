@@ -150,9 +150,14 @@ export default {
       text-align: center;
       flex: 1;
     }
+    &:hover {
+      svg {
+        transform: scale(1.2);
+      }
+    }
     svg {
       fill: #495057;
-      transition: 200ms ease;
+      transition: 400ms ease;
 
       cursor: pointer;
       height: 1.5rem;

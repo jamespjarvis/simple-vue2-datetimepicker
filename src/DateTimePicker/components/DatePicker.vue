@@ -1,12 +1,16 @@
 <template>
   <div class="date-picker">
     <header>
-      <ChevronLeft @click="setMonth(-1)" />
+      <button>
+        <ChevronLeft @click="setMonth(-1)" />
+      </button>
       <span>
         {{ currentMonth }}
         <b>{{ currentYear }}</b>
       </span>
-      <ChevronRight @click="setMonth(1)" />
+      <button>
+        <ChevronRight @click="setMonth(1)" />
+      </button>
     </header>
     <Calendar
       :days="displayRows"
@@ -164,3 +168,22 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+.date-picker {
+  button {
+    all: initial;
+    width: 24px;
+    height: 24px;
+    padding: 1px;
+    border-radius: 50%;
+    svg {
+      transition: transform 400ms ease;
+    }
+    &:hover {
+      svg {
+        transform: scale(1.2);
+      }
+    }
+  }
+}
+</style>
