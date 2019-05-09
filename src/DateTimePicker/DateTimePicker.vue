@@ -40,8 +40,7 @@ export default {
   props: {
     value: {
       type: Date,
-      required: false,
-      default: () => new Date()
+      required: true
     },
     date: {
       type: Boolean,

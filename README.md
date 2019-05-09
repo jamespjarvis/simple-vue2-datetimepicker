@@ -75,7 +75,7 @@ Vue.component('datetimepicker', DateTimePicker);
 
 ```javascript
 import DateTimePicker from "simple-vue2-datetimepicker";
-Vue.use(SimpleVue2DateTimePicker);
+Vue.use(DateTimePicker);
 ```
 
 
